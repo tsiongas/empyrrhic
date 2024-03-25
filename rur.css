@@ -1,0 +1,86 @@
+
+body {
+  background-color: black;
+}
+
+/* Your CSS styles for the video container */
+.video-container {
+  display: flex;
+  height: 95vh;
+}
+
+/* Your CSS styles for the left video container */
+.left-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+/* Your CSS styles for each video in the left container */
+.left-videos video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Your CSS styles for the right video container */
+.right-video {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px; /* Add margin to create a gap */
+}
+
+/* Your CSS styles for the video 7 */
+.right-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 75%;
+}
+
+/* Style for the start all videos button */
+#toggleButton {
+  width: auto;
+  height: auto;
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+  z-index: 1000;
+  background-color: black; /* Red color */
+  border-radius: 50%; /* Make it a circle */
+  color: white; 
+  font-family: Arial, sans-serif; /* Set font to Arial */
+  font-size: 14px;
+  border: none; /* Remove border */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Optional: Add hover effect */
+#toggleButton:hover {
+  opacity: 0.7; /* Adjust opacity as needed */
+  color: red;
+}
+
+#batteryLevel {
+  font-family: Arial, sans-serif; /* Set font to Arial */
+  font-size: 14px;
+  position: fixed;
+  bottom: 10px;
+  right:40px;
+  color: white;
+}
+
+
+#timer {
+  font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: white;
+    position: fixed;
+    bottom: 10px;
+    right: 50%;
+    z-index: 1000;
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Player</title>
+    <link rel="stylesheet" type="text/css" href="/Users/aku/Desktop/rur.css">
+</head>
+<body>
+    <div class="video-container">
+        <!-- Videos 1-6 -->
+        <div class="left-videos">
+            <video id="video1" controls loop>
+                <source src="/Users/aku/Desktop/r1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video id="video2" controls loop>
+                <source src="/Users/aku/Desktop/r2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video id="video3" controls loop>
+                <source src="/Users/aku/Desktop/r3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video id="video4" controls loop>
+                <source src="/Users/aku/Desktop/r4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video id="video5" controls loop>
+                <source src="/Users/aku/Desktop/r5.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video id="video6" controls loop>
+                <source src="/Users/aku/Desktop/r6.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Video 7 -->
+        <div class="right-video">
+            <video id="video7" controls loop>
+                <source src="/Users/aku/Desktop/r7.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <button id="toggleButton">On/Off</button>
+
+    <span id="timer">00:00:00</span>
+
+    <span id="batteryLevel">Battery Level: </span>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          var videos = document.querySelectorAll('video');
+          var timerElement = document.getElementById('timer');
+          var batteryLevelElement = document.getElementById('batteryLevel');
+          var toggleButton = document.getElementById('toggleButton');
+          var isPlaying = false;
+          var totalSeconds = 0;
+          var timerInterval;
+  
+          // Function to start or pause all videos
+          function toggleAllVideos() {
+              if (isPlaying) {
+                  videos.forEach(function(video) {
+                      video.pause();
+                  });
+                  clearInterval(timerInterval);
+                  isPlaying = false;
+                  toggleButton.style.backgroundColor = 'black'; // Set button color to red when videos are paused
+              } else {
+                  videos.forEach(function(video) {
+                      video.play();
+                  });
+                  timerInterval = setInterval(updateTimer, 1000);
+                  isPlaying = true;
+                  toggleButton.style.backgroundColor = 'black'; // Set button color to green when videos are playing
+              }
+          }
+  
+          // Function to start playing all videos
+          function startAllVideos() {
+              videos.forEach(function(video) {
+                  if (video.tagName === 'VIDEO') {
+                      video.play();
+                  } else if (video.tagName === 'IFRAME') {
+                      var iframeUrl = video.src;
+                      iframeUrl += (iframeUrl.includes('?') ? '&' : '?') + 'autoplay=true';
+                      video.src = iframeUrl;
+                  }
+              });
+          }
+  
+          // Autoplay all videos when the button is clicked
+          toggleButton.addEventListener('click', function() {
+              toggleAllVideos();
+          });
+  
+          // Fullscreen mode on click for each video
+          videos.forEach(function(video) {
+              function toggleFullScreen() {
+                  if (video.requestFullscreen) {
+                      if (!document.fullscreenElement) {
+                          video.requestFullscreen().then(() => {
+                              video.play();
+                          }).catch((err) => {
+                              console.error('Failed to enter fullscreen mode: ', err);
+                          });
+                      } else {
+                          document.exitFullscreen();
+                      }
+                  } else if (video.mozRequestFullScreen) {
+                      if (!document.mozFullScreenElement) {
+                          video.mozRequestFullScreen();
+                      } else {
+                          document.mozCancelFullScreen();
+                      }
+                  } else if (video.webkitRequestFullscreen) {
+                      if (!document.webkitFullscreenElement) {
+                          video.webkitRequestFullscreen();
+                      } else {
+                          document.webkitExitFullscreen();
+                      }
+                  } else if (video.msRequestFullscreen) {
+                      if (!document.msFullscreenElement) {
+                          video.msRequestFullscreen();
+                      } else {
+                          document.msExitFullscreen();
+                      }
+                  }
+              }
+  
+              // Add click event listener to each video
+              video.addEventListener('click', toggleFullScreen);
+          });
+  
+          // Update the timer every second
+          function updateTimer() {
+              totalSeconds++;
+              var hours = Math.floor(totalSeconds / 3600);
+              var minutes = Math.floor((totalSeconds % 3600) / 60);
+              var seconds = totalSeconds % 60;
+              var formattedTime = (hours < 10 ? '0' : '') + hours + ':' +
+                                  (minutes < 10 ? '0' : '') + minutes + ':' +
+                                  (seconds < 10 ? '0' : '') + seconds;
+              timerElement.textContent = formattedTime;
+          }
+  
+          // Check if Battery API is supported
+          if ('getBattery' in navigator) {
+              navigator.getBattery().then(function(battery) {
+                  updateBatteryLevel(battery.level);
+  
+                  // Update battery level when it changes
+                  battery.addEventListener('levelchange', function() {
+                      updateBatteryLevel(battery.level);
+                  });
+              });
+          } else {
+              batteryLevelElement.textContent = 'Battery API not supported';
+          }
+  
+          // Function to update battery level display
+          function updateBatteryLevel(level) {
+              // Update the display with the battery level
+              batteryLevelElement.textContent = 'Battery Level: ' + (level * 100).toFixed(2) + '%';
+          }
+      });
+  </script>
+  
+      
+      
+      
+</body>
+</html>
